@@ -13,7 +13,9 @@ import {
   WebView,
   Image,
   Dimensions,
-  StatusBar
+  StatusBar,
+  TouchableOpacity,
+  Linking
 } from 'react-native';
 import {  
   Container, 
@@ -79,15 +81,17 @@ export default class DHD_Portal extends Component {
              {!newss ? (
               <Text>Nothing News</Text> 
              ): 
-                 newss[0] && newss[0].pageFunctionResult.map((attribute, key)=>{ 
+                 newss[0] && newss[0].pageFunctionResult.map((attribute, keyz)=>{ 
                   console.log("isi map", attribute)
+                  const link = attribute.Link;
                   return(
-                    <CardItem>
+                    <CardItem key={keyz.toString()}>
                     <Left>
                       <Thumbnail source={{uri: 'https://dummyimage.com/600x400/000/fff'}} />
                       <Body>
-                        <Text>{attribute.Title}</Text>
-                        <Text>HHH</Text>
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => Linking.openURL({link})}>
+                          <Text style={{ color: '#c02534', fontSize: 15, marginTop: 10 }}>{attribute.Title}</Text>
+                        </TouchableOpacity>
                       </Body>
                     </Left>
                   </CardItem>
