@@ -41,6 +41,28 @@ import Tab3 from './tabThree';
 const { height, width } = Dimensions.get('window');
 
 export default class DHD_Portal extends Component {
+  constructor(){
+      super();
+      this.state = {
+          news: [],
+          loading: true,
+      };
+  }
+
+  componentDidMount(){
+    fetch('https://api.apifier.com/v1/execs/rdF3LwJutJRWfGe5N/results')
+    .then((response)=> response.json())
+    .then((responseJson) => {
+      this.setState({
+        news: responseJson,
+      }) 
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
+
   render() {
     closeDrawer = () => {
       this.drawer._root.close()
@@ -48,152 +70,28 @@ export default class DHD_Portal extends Component {
     openDrawer = () => {
       this.drawer._root.open()
     };
+    const newss = this.state.news;
+    console.log("hhhh===", newss)
     return (
       <Container>
         <Content>
-          {/*
-          <Tabs style={{backgroundColor:'red'}}>
-            <Tab heading={ <TabHeading><Text> Ask Jeeves</Text></TabHeading>}>
-              <Tab1 />
-            </Tab>
-            <Tab heading={ <TabHeading><Text> Alta Vista</Text></TabHeading>}>
-              <Tab2 />
-            </Tab>
-            <Tab heading={ <TabHeading><Text> YAHOO</Text></TabHeading>}>
-              <Tab3 />
-            </Tab>
-          </Tabs>
-          */}
           <Card style={{flex: 0}}>
-            <CardItem>
-              <Left>
-                <Thumbnail source={{uri: 'https://dummyimage.com/600x400/000/fff'}} />
-                <Body>
-                  <Text>NativeBase</Text>
-                  <Text note>April 15, 2016</Text>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Image source={{uri: 'https://dummyimage.com/600x400/000/fff'}} style={{height: 200, width: 0.9 * width , flex: 1}}/>
-                <Text>
-                  Berita 1
-                </Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Button transparent textStyle={{color: '#87838B'}}>
-                  <Text> 1,926 stars</Text>
-                </Button>
-              </Left>
-            </CardItem>
-          </Card>
-          <Card style={{flex: 0}}>
-            <CardItem>
-              <Left>
-                <Thumbnail source={{uri: 'https://dummyimage.com/600x400/000/fff'}} />
-                <Body>
-                  <Text>NativeBase</Text>
-                  <Text note>April 15, 2016</Text>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Image source={{uri: 'https://dummyimage.com/600x400/000/fff'}} style={{height: 200, width: 0.9 * width , flex: 1}}/>
-                <Text>
-                  Berita 1
-                </Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Button transparent textStyle={{color: '#87838B'}}>
-                  <Text> 1,926 stars</Text>
-                </Button>
-              </Left>
-            </CardItem>
-          </Card>
-          <Card style={{flex: 0}}>
-            <CardItem>
-              <Left>
-                <Thumbnail source={{uri: 'https://dummyimage.com/600x400/000/fff'}} />
-                <Body>
-                  <Text>NativeBase</Text>
-                  <Text note>April 15, 2016</Text>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Image source={{uri: 'https://dummyimage.com/600x400/000/fff'}} style={{height: 200, width: 0.9 * width , flex: 1}}/>
-                <Text>
-                  Berita 1
-                </Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Button transparent textStyle={{color: '#87838B'}}>
-                  <Text> 1,926 stars</Text>
-                </Button>
-              </Left>
-            </CardItem>
-          </Card>
-          <Card style={{flex: 0}}>
-            <CardItem>
-              <Left>
-                <Thumbnail source={{uri: 'https://dummyimage.com/600x400/000/fff'}} />
-                <Body>
-                  <Text>NativeBase</Text>
-                  <Text note>April 15, 2016</Text>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Image source={{uri: 'https://dummyimage.com/600x400/000/fff'}} style={{height: 200, width: 0.9 * width , flex: 1}}/>
-                <Text>
-                  Berita 1
-                </Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Button transparent textStyle={{color: '#87838B'}}>
-
-                  <Text> 1,926 stars</Text>
-                </Button>
-              </Left>
-            </CardItem>
-          </Card>
-          <Card style={{flex: 0}}>
-            <CardItem>
-              <Left>
-                <Thumbnail source={{uri: 'https://dummyimage.com/600x400/000/fff'}} />
-                <Body>
-                  <Text>NativeBase</Text>
-                  <Text note>April 15, 2016</Text>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Image source={{uri: 'https://dummyimage.com/600x400/000/fff'}} style={{height: 200, width: 0.9 * width , flex: 1}}/>
-                <Text>
-                  Berita 1
-                </Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Button transparent textStyle={{color: '#87838B'}}>
-                  <Text> 1,926 stars</Text>
-                </Button>
-              </Left>
-            </CardItem>
+             {!newss ? (
+              <Text>Nothing News</Text> 
+             ): 
+                 newss[0] && newss[0].pageFunctionResult.map((attribute, key)=>{ 
+                  console.log("isi map", attribute)
+                  return(
+                    <CardItem>
+                    <Left>
+                      <Thumbnail source={{uri: 'https://dummyimage.com/600x400/000/fff'}} />
+                      <Body>
+                        <Text>{attribute.Title}</Text>
+                        <Text>HHH</Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                  ) })}
           </Card>
         </Content>
         <Header searchBar rounded>
