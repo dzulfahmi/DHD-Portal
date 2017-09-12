@@ -49,12 +49,10 @@ export default class DHD_Portal extends Component {
       };
   }
 
-  componentWillMount(){
-    console.log("hallo")
+  componentDidMount(){
     fetch('https://api.apifier.com/v1/execs/rdF3LwJutJRWfGe5N/results')
     .then((response)=> response.json())
     .then((responseJson) => {
-      console.log("response", responseJson);
       this.setState({
         news: responseJson,
       }) 
@@ -73,22 +71,27 @@ export default class DHD_Portal extends Component {
       this.drawer._root.open()
     };
     const newss = this.state.news;
+    console.log("hhhh===", newss)
     return (
       <Container>
         <Content>
           <Card style={{flex: 0}}>
-            {newss && newss[0].pageFunctionResult.map((attribute, key)=>{
-              console.log("isi map", attribute);
-              return(
-                <CardItem>
-                  <Left>
-                    <Thumbnail source={{uri: 'https://dummyimage.com/600x400/000/fff'}} />
-                    <Body>
-                      <Text>NativeBase</Text>ke
-                  </Left>
-                </CardItem>
-              );
-            })}
+             {!newss ? (
+              <Text>Nothing News</Text> 
+             ): 
+                 newss[0] && newss[0].pageFunctionResult.map((attribute, key)=>{ 
+                  console.log("isi map", attribute)
+                  return(
+                    <CardItem>
+                    <Left>
+                      <Thumbnail source={{uri: 'https://dummyimage.com/600x400/000/fff'}} />
+                      <Body>
+                        <Text>{attribute.Title}</Text>
+                        <Text>HHH</Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                  ) })}
           </Card>
         </Content>
         <Header searchBar rounded>
