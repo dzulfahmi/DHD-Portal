@@ -48,6 +48,7 @@ export default class DHD_Portal extends Component {
       this.state = {
           news: [],
           loading: true,
+          newsFilter: []
       };
   }
 
@@ -62,8 +63,22 @@ export default class DHD_Portal extends Component {
     .catch((error) => {
       console.log(error);
     })
+    console.log('landing here componentDidMount',this);
   }
 
+
+  handleFilter = (param) => {
+    const filteredNews = [];
+    this.state.news[0].pageFunctionResult.map((data) => {
+      if (data.Title.toLowerCase().includes(param.toLowerCase())) {
+        filteredNews.push(data);
+        console.log('landing here filteredNews',filteredNews);
+      }
+    });
+    this.setState({
+      newsFilter: filteredNews
+    });
+  }
 
   render() {
     closeDrawer = () => {
@@ -73,7 +88,6 @@ export default class DHD_Portal extends Component {
       this.drawer._root.open()
     };
     const newss = this.state.news;
-    console.log("hhhh===", newss)
     return (
       <Container>
         <Content>
@@ -81,8 +95,8 @@ export default class DHD_Portal extends Component {
              {!newss ? (
               <Text>Nothing News</Text> 
              ): 
-                 newss[0] && newss[0].pageFunctionResult.map((attribute, keyz)=>{ 
-                  console.log("isi map", attribute)
+                 this.state.newsFilter.map((attribute, keyz)=>{ 
+                  console.log("isi map", attribute.Title)
                   const link = attribute.Link;
                   return(
                     <CardItem key={keyz.toString()}>
@@ -100,7 +114,10 @@ export default class DHD_Portal extends Component {
         </Content>
         <Header searchBar rounded>
           <Item>
-            <Input placeholder="Search" />
+            <Input 
+              placeholder="Search"
+              onChangeText={text => this.handleFilter(text)}
+            />
           </Item>
           <Button transparent>
             <Text>Search</Text>
