@@ -56,8 +56,10 @@ export default class DHD_Portal extends Component {
     fetch('https://api.apifier.com/v1/execs/rdF3LwJutJRWfGe5N/results')
     .then((response)=> response.json())
     .then((responseJson) => {
+      console.log('landing here responseJSON', responseJson); 
       this.setState({
         news: responseJson,
+        newsFilter : responseJson[0].pageFunctionResult // Something to add for appearing all news at first
       }) 
     })
     .catch((error) => {
